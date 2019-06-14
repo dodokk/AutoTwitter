@@ -215,14 +215,17 @@ def mode_select(mode, num, interval): #"Top", "Latest", "People", "Photos", "Vid
 # いいねを上からnum個、およそinterval秒ごとに押す
 def scrolling_like(num, interval):
     like_count = 0
+    sleep(1)
     for i in range(1000):
-
         likes = driver.find_elements_by_xpath('//div[@data-testid="like"]')
         unlikes = driver.find_elements_by_xpath('//div[@data-testid="unlike"]')
+
         if len(likes) > 0:
             likes[0].location_once_scrolled_into_view
             likes[0].send_keys(Keys.ENTER)
             like_count += 1
+            sleep(random.uniform(interval / 2, interval * 3 / 2))
+            continue
         elif len(unlikes) > 0:
             unlikes[-1].location_once_scrolled_into_view
             sleep(1)
@@ -233,8 +236,6 @@ def scrolling_like(num, interval):
         if like_count >= num:
             print("規定数に到達しました")
             break
-
-        sleep(random.uniform(interval/2, interval*3/2))
 
         likes = driver.find_elements_by_xpath('//div[@data-testid="like"]')
         if len(likes) == 0:
